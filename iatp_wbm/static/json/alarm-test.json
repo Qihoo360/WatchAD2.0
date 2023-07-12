@@ -1,0 +1,96 @@
+{
+    "type": "page",
+    "title": "功能测试",
+    "body": [
+      {
+        "type": "form",
+        "title": "告警功能测试",
+        "body": [
+          {
+            "type": "editor",
+            "label": "原始日志",
+            "name": "editor",
+            "mode": "",
+            "language": "json",
+            "size": "xxl"
+          },
+          {
+            "type": "select",
+            "label": "日志类型",
+            "name": "select",
+            "options": [
+              {
+                "label": "系统日志",
+                "value": "event_log"
+              },
+              {
+                "label": "NIDS日志",
+                "value": "suricata"
+              },
+              {
+                "label": "流量日志",
+                "value": "traffic"
+              }
+            ],
+            "size": "sm",
+            "checkAll": false,
+            "selectFirst": true,
+            "value": "event_log"
+          }
+        ],
+        "affixFooter": false,
+        "panelClassName": "Panel--primary",
+        "persistData": true,
+        "target": "test_result",
+        "reload": "test_result"
+      },
+      {
+        "type": "panel",
+        "title": "测试结果",
+        "body": [
+          {
+            "type": "crud",
+            "api": {
+              "method": "post",
+              "url": "/alarm/test",
+              "dataType": "form",
+              "data": {
+                "&": "$$"
+              }
+            },
+            "bulkActions": [],
+            "itemActions": [],
+            "perPageAvailable": [
+              10
+            ],
+            "messages": {},
+            "syncLocation": false,
+            "loadDataOnce": true,
+            "mode": "table",
+            "headerToolbar": [],
+            "columns": [
+              {
+                "name": "plugin_name",
+                "label": "插件名称",
+                "type": "text"
+              },
+              {
+                "type": "mapping",
+                "map": {
+                  "*": "<span class=\"label label-default\">未知状态</span>",
+                  "false": "<span class=\"label label-success\">通过</span>",
+                  "true": "<span class=\"label label-danger\">告警</span>"
+                },
+                "name": "alarm_status",
+                "label": "告警状态"
+              }
+            ],
+            "initFetch": true,
+            "primaryField": "id",
+            "name": "test_result"
+          }
+        ],
+        "className": "Panel--primary"
+      }
+    ]
+  }

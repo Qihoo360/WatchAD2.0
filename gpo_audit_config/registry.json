@@ -1,0 +1,29 @@
+[
+    {
+        "tag": "测试数据",
+        "registry_hive": "HKEY_LOCAL_MACHINE",
+        "registry_key": "SOFTWARE\\Policies\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\Zones\\3",
+        "registry_name": "1004",
+        "registry_value": "00000003",
+        "action": "U",
+        "description": "测试数据检测"
+    },
+    {
+        "tag": "禁用Windows Defender",
+        "registry_hive": "HKEY_LOCAL_MACHINE",
+        "registry_key": "SOFTWARE\\Policies\\Microsoft\\Windows Defender",
+        "registry_name": "DisableAntiSpyware",
+        "registry_value": "00000001",
+        "action": "U",
+        "description": "存在禁用Windows Defender的注册表配置项"
+    },
+    {
+        "tag": "关闭LSASS保护",
+        "registry_hive": "HKEY_LOCAL_MACHINE",
+        "registry_key": "SYSTEM\\CurrentControlSet\\Control\\Lsa",
+        "registry_name": "RunAsPPL",
+        "registry_value": "00000001",
+        "action": "U",
+        "description": "关闭LSASS保护,可能导致异常进程恶意注入到Lsass.exe进程"
+    }
+]

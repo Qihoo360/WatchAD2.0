@@ -1,0 +1,247 @@
+{
+  "type": "page",
+  "body": [
+    {
+      "type": "form",
+      "title": "查询条件",
+      "body": [
+        {
+          "label": "用户名",
+          "type": "input-text",
+          "name": "user_name",
+          "size": "",
+          "mode": "",
+          "required": true
+        },
+        {
+          "type": "select",
+          "label": "所属域",
+          "name": "domain_name",
+          "options": [
+            {
+              "label": "Doamin 域",
+              "value": "Domain"
+            }
+          ],
+          "mode": "inline",
+          "required": true,
+          "checkAll": false,
+          "value": "Domain",
+          "searchable": true,
+          "source": {
+            "method": "post",
+            "url": "/tool/domain/list",
+            "dataType": "form"
+          }
+        }
+      ],
+      "affixFooter": false,
+      "panelClassName": "Panel--primary",
+      "target": "dacl_status",
+      "reload": "dacl_status",
+      "mode": "inline"
+    },
+    {
+      "type": "grid",
+      "columns": [
+        {
+          "body": [
+            {
+              "type": "panel",
+              "title": "标题",
+              "body": [
+                {
+                  "type": "chart",
+                  "config": {
+                    "xAxis": {
+                      "type": "category",
+                      "data": [
+                        "Mon",
+                        "Tue",
+                        "Wed",
+                        "Thu",
+                        "Fri",
+                        "Sat",
+                        "Sun"
+                      ]
+                    },
+                    "yAxis": {
+                      "type": "value"
+                    },
+                    "series": [
+                      {
+                        "data": [
+                          820,
+                          932,
+                          901,
+                          934,
+                          1290,
+                          1330,
+                          1320
+                        ],
+                        "type": "line"
+                      }
+                    ]
+                  },
+                  "replaceChartOption": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "body": [
+            {
+              "type": "panel",
+              "title": "标题",
+              "body": [
+                {
+                  "type": "chart",
+                  "config": {
+                    "xAxis": {
+                      "type": "category",
+                      "data": [
+                        "Mon",
+                        "Tue",
+                        "Wed",
+                        "Thu",
+                        "Fri",
+                        "Sat",
+                        "Sun"
+                      ]
+                    },
+                    "yAxis": {
+                      "type": "value"
+                    },
+                    "series": [
+                      {
+                        "data": [
+                          820,
+                          932,
+                          901,
+                          934,
+                          1290,
+                          1330,
+                          1320
+                        ],
+                        "type": "line"
+                      }
+                    ]
+                  },
+                  "replaceChartOption": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "crud",
+      "api": {
+        "method": "post",
+        "url": "/tool/dacl/detection",
+        "dataType": "form",
+        "data": {
+          "&": "$$"
+        }
+      },
+      "columns": [
+        {
+          "name": "ace_type",
+          "label": "ACE 类型",
+          "type": "text",
+          "placeholder": "-"
+        },
+        {
+          "name": "ace_mask",
+          "label": "ACE 权限",
+          "type": "text"
+        },
+        {
+          "name": "object_type",
+          "label": "对象类型",
+          "type": "text"
+        },
+        {
+          "name": "inherited_object_type",
+          "label": "继承对象类型",
+          "type": "text"
+        },
+        {
+          "name": "sid",
+          "label": "授权对象",
+          "type": "text"
+        },
+        {
+          "type": "mapping",
+          "value": 2,
+          "map": {
+            "normal": "<span class=\"label label-success\">正常配置</span>",
+            "*": "<span class=\"label label-default\">-</span>",
+            "abnormal": "<span class=\"label label-danger\">异常配置</span>"
+          },
+          "name": "status",
+          "label": "检测状态"
+        }
+      ],
+      "bulkActions": [],
+      "itemActions": [],
+      "perPageAvailable": [
+        10
+      ],
+      "messages": {
+        "fetchSuccess": "查询成功",
+        "fetchFailed": "查询失败"
+      },
+      "syncLocation": false,
+      "name": "dacl_status",
+      "loadDataOnce": true,
+      "initFetch": false,
+      "columnsTogglable": true,
+      "title": "",
+      "filter": {
+        "title": "ACE结果筛查",
+        "body": [
+          {
+            "type": "select",
+            "label": "检测状态",
+            "name": "select_status",
+            "options": [
+              {
+                "label": "正常",
+                "value": "normal"
+              },
+              {
+                "label": "异常",
+                "value": "abnormal"
+              }
+            ],
+            "checkAll": false,
+            "mode": ""
+          }
+        ],
+        "affixFooter": false,
+        "panelClassName": "Panel--primary"
+      },
+      "headerToolbar": [
+        {
+          "type": "export-excel",
+          "align": "left"
+        }
+      ],
+      "footerToolbar": [
+        {
+          "type": "pagination",
+          "align": "left"
+        }
+      ],
+      "perPage": 15,
+      "pageField": "page",
+      "perPageField": "perPage"
+    }
+  ],
+  "title": "强制访问控制(DACL)检测",
+  "aside": [],
+  "remark": "DACL 相关解析并识别异常"
+}

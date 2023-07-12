@@ -1,0 +1,271 @@
+{
+    "type": "page",
+    "title": "系统设置",
+    "body": [
+        {
+            "type": "form",
+            "title": "通用设置",
+            "body": [
+                {
+                    "type": "tpl",
+                    "tpl": "接入域相关配置",
+                    "inline": false
+                },
+                {
+                    "type": "service",
+                    "body": [],
+                    "messages": {},
+                    "schemaApi": {
+                        "method": "post",
+                        "url": "/setting/query",
+                        "dataType": "form",
+                        "data": {
+                            "name": "domain"
+                        }
+                    },
+                    "initFetch": true,
+                    "api": ""
+                },
+                {
+                    "type": "divider",
+                    "className": "b-4x m-none"
+                },
+                {
+                    "type": "tpl",
+                    "tpl": "数据源相关配置",
+                    "inline": false
+                },
+                {
+                    "type": "service",
+                    "body": [],
+                    "messages": {},
+                    "schemaApi": {
+                        "method": "post",
+                        "url": "/setting/query",
+                        "dataType": "form",
+                        "data": {
+                            "name": "source"
+                        }
+                    },
+                    "initFetch": true,
+                    "api": ""
+                },
+                {
+                    "type": "divider",
+                    "className": "b-4x m-none"
+                },
+                {
+                    "type": "input-tag",
+                    "label": "高风险SPN",
+                    "name": "high_risk_spn",
+                    "options": [],
+                    "remark": null,
+                    "optionsTip": "最近您使用的标签",
+                    "clearable": true,
+                    "source": {
+                        "method": "post",
+                        "url": "/setting/query",
+                        "data": {
+                            "name": "high_risk_spn"
+                        },
+                        "dataType": "form"
+                    },
+                    "editable": true,
+                    "className": "m-t-sm"
+                },
+                {
+                    "type": "divider",
+                    "className": "b-4x m-none"
+                },
+                {
+                    "type": "tpl",
+                    "tpl": "高风险用户相关配置",
+                    "inline": false
+                },
+                {
+                    "type": "service",
+                    "body": [],
+                    "messages": {},
+                    "schemaApi": {
+                        "method": "post",
+                        "url": "/setting/query",
+                        "dataType": "form",
+                        "data": {
+                            "name": "high_risk_account"
+                        }
+                    },
+                    "initFetch": true,
+                    "api": ""
+                },
+                {
+                    "type": "divider",
+                    "className": "b-4x m-none"
+                },
+                {
+                    "type": "tpl",
+                    "tpl": "加域管理员相关配置",
+                    "inline": false
+                },
+                {
+                    "type": "service",
+                    "body": [],
+                    "messages": {},
+                    "schemaApi": {
+                        "method": "post",
+                        "url": "/setting/query",
+                        "dataType": "form",
+                        "data": {
+                            "name": "join_domain_admin_user"
+                        }
+                    },
+                    "initFetch": true,
+                    "api": ""
+                },
+                {
+                    "type": "divider",
+                    "className": "b-4x m-none"
+                },
+                {
+                    "type": "tpl",
+                    "tpl": "高风险OU相关配置",
+                    "inline": false
+                },
+                {
+                    "type": "service",
+                    "body": [],
+                    "messages": {},
+                    "schemaApi": {
+                        "method": "post",
+                        "url": "/setting/query",
+                        "dataType": "form",
+                        "data": {
+                            "name": "high_risk_ou"
+                        }
+                    },
+                    "initFetch": true,
+                    "api": ""
+                }
+            ],
+            "submitText": "保存",
+            "affixFooter": false,
+            "panelClassName": "Panel--primary",
+            "api": {
+                "method": "post",
+                "url": "/setting/save",
+                "dataType": "json",
+                "data": {
+                    "&": "$$",
+                    "save_type": "general"
+                }
+            }
+        },
+        {
+            "type": "form",
+            "title": "插件设置",
+            "body": [
+                {
+                    "type": "input-tag",
+                    "label": "NTLM Relay 插件 - 来源过滤(可以设置为VPN网段)",
+                    "name": "vpn_segment",
+                    "options": [],
+                    "remark": null,
+                    "optionsTip": "最近您使用的标签",
+                    "clearable": true,
+                    "source": {
+                        "method": "post",
+                        "url": "/setting/query",
+                        "data": {
+                            "name": "vpn_segment"
+                        },
+                        "dataType": "form"
+                    },
+                    "editable": true
+                },
+                {
+                    "type": "divider",
+                    "className": "b-4x m-none"
+                },
+                {
+                    "type": "tpl",
+                    "tpl": "NTLM Relay 插件 - 对指定用户创建白名单，规则用户名:网段字符串",
+                    "inline": false
+                },
+                {
+                    "type": "service",
+                    "body": [],
+                    "messages": {},
+                    "schemaApi": {
+                        "method": "post",
+                        "url": "/setting/query",
+                        "dataType": "form",
+                        "data": {
+                            "name": "ntlm_relay_white_user_segment"
+                        }
+                    },
+                    "initFetch": true,
+                    "api": ""
+                },
+                {
+                    "type": "divider",
+                    "className": "b-4x m-none"
+                },
+                {
+                    "type": "input-tag",
+                    "label": "异常的显示凭据登录行为插件 - 可信的进程名",
+                    "name": "explicit_credential_process",
+                    "options": [],
+                    "remark": null,
+                    "optionsTip": "最近您使用的标签",
+                    "clearable": true,
+                    "source": {
+                        "method": "post",
+                        "url": "/setting/query",
+                        "data": {
+                            "name": "explicit_credential_process"
+                        },
+                        "dataType": "form"
+                    },
+                    "editable": true,
+                    "className": "m-t-sm"
+                },
+                {
+                    "type": "divider",
+                    "className": "b-4x m-none"
+                },
+                {
+                    "type": "tpl",
+                    "tpl": "证书服务活动插件 - 可信的账户及认证来源",
+                    "inline": false
+                },
+                {
+                    "type": "service",
+                    "body": [],
+                    "messages": {},
+                    "schemaApi": {
+                        "method": "post",
+                        "url": "/setting/query",
+                        "dataType": "form",
+                        "data": {
+                            "name": "certificate_activite"
+                        }
+                    },
+                    "initFetch": true,
+                    "api": ""
+                }
+            ],
+            "submitText": "保存",
+            "affixFooter": false,
+            "panelClassName": "Panel--primary",
+            "api": {
+                "method": "post",
+                "url": "/setting/save",
+                "dataType": "json",
+                "data": {
+                    "&": "$$",
+                    "save_type": "plugin"
+                }
+            }
+        }
+    ],
+    "aside": []
+}

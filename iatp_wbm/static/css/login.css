@@ -1,0 +1,30 @@
+.custom-height {
+    height: 100%;
+}
+
+.app-wrapper .custom-padding {
+    padding: 0;
+}
+
+.custom-form-width {
+    width: 300px;
+}
+
+.amis-scope .cxd-Panel--primary>.cxd-Panel-heading,
+.amis-scope .cxd-Panel {
+    background: rgba(0, 0, 0, 0);
+    border: none;
+}
+
+.amis-scope .cxd-Panel-footer {
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.amis-scope .cxd-Panel-btnToolbar .cxd-Button {
+    width: 300px;
+    margin-left: 0px;
+}

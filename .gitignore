@@ -1,0 +1,7 @@
+vendor/*
+.vscode/*
+.idea/*
+test/*
+/vendor/*
+.env
+/data

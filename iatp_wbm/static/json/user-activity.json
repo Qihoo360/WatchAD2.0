@@ -1,0 +1,86 @@
+{
+    "type": "crud",
+    "api": {
+      "method": "post",
+      "url": "/user/activity",
+      "dataType": "form"
+    },
+    "bulkActions": [],
+    "itemActions": [],
+    "features": [
+      "filter"
+    ],
+    "filter": {
+      "title": "查询条件",
+      "body": [
+        {
+          "type": "input-datetime-range",
+          "label": "日期时间范围",
+          "name": "input-datetime-range"
+        },
+        {
+          "type": "input-text",
+          "name": "activity_user_name",
+          "label": "用户名"
+        },
+        {
+          "type": "input-text",
+          "label": "登录来源",
+          "name": "logon_source",
+          "hint": "主机名或IP地址"
+        }
+      ]
+    },
+    "perPageAvailable": [
+      20
+    ],
+    "messages": {
+      "fetchSuccess": "活动信息获取成功",
+      "fetchFailed": "未查询到活动信息"
+    },
+    "initFetch": true,
+    "loadDataOnce": true,
+    "headerToolbar": [
+      {
+        "type": "bulk-actions"
+      }
+    ],
+    "syncLocation": false,
+    "mode": "table",
+    "columns": [
+      {
+        "name": "When",
+        "label": "登录时间",
+        "type": "text"
+      },
+      {
+        "name": "Who",
+        "label": "用户名",
+        "type": "text"
+      },
+      {
+        "name": "Where",
+        "label": "目标服务器",
+        "type": "text"
+      },
+      {
+        "name": "FromHost",
+        "label": "来源主机名",
+        "type": "text"
+      },
+      {
+        "name": "FromAddress",
+        "label": "来源IP地址",
+        "type": "text"
+      },
+      {
+        "name": "Type",
+        "label": "登录类型",
+        "type": "text"
+      }
+    ],
+    "keepItemSelectionOnPageChange": true,
+    "perPage": 20,
+    "pageField": "page",
+    "perPageField": "perPage"
+  }

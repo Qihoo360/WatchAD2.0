@@ -1,0 +1,62 @@
+{
+    "type": "page",
+    "title": "GPO 风险识别",
+    "body": [
+        {
+            "type": "form",
+            "title": "查询条件",
+            "body": [
+                {
+                    "label": "组策略对象 UUID",
+                    "type": "input-text",
+                    "name": "gpo_uuid",
+                    "size": "",
+                    "mode": "inline",
+                    "required": true
+                },
+                {
+                    "type": "select",
+                    "label": "所属域",
+                    "name": "domain_name",
+                    "options": [
+                        {
+                            "label": "Domain 域",
+                            "value": "Domain"
+                        }
+                    ],
+                    "mode": "inline",
+                    "required": true,
+                    "checkAll": false,
+                    "value": "Domain",
+                    "searchable": true,
+                    "source": {
+                        "method": "post",
+                        "url": "/tool/domain/list",
+                        "dataType": "form"
+                    }
+                }
+            ],
+            "affixFooter": false,
+            "panelClassName": "Panel--primary",
+            "target": "gpo_detail",
+            "reload": "gpo_detail"
+        },
+        {
+            "type": "service",
+            "body": [],
+            "messages": {},
+            "schemaApi": {
+                "method": "post",
+                "url": "/tool/gpo/schema",
+                "dataType": "form",
+                "data": {
+                    "&": "$$"
+                }
+            },
+            "initFetch": false,
+            "name": "gpo_detail"
+        }
+    ],
+    "aside": [],
+    "messages": {}
+}

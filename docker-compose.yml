@@ -1,0 +1,43 @@
+version: '3'
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+  kafka:
+    image: wurstmeister/kafka
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      # client 要访问的 broker 地址
+      KAFKA_ADVERTISED_HOST_NAME: ${KAFKAHOST}
+      KAFKA_BROKER_ID: 1
+      # 通过端口连接 zookeeper
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      # 外部网络只能获取到容器名称，在内外网络隔离情况下
+      # 通过名称是无法成功访问 kafka 的
+      # 因此需要通过绑定这个监听器能够让外部获取到的是 IP 
+      KAFKA_ADVERTISED_LISTENERS: ${KAFKAADV}
+      # kafka 监听器，告诉外部连接者要通过什么协议访问指定主机名和端口开放的 Kafka 服务。
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      # 设置 kafka 日志位置
+      KAFKA_LOG_DIRS: "/kafka/logs"
+    volumes:
+      - ./data/kafka/logs:/kafka/logs
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGOUSER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGOPWD}
+    volumes:
+      - ./data/mongo:/data/db
+  iatp:
+    build: .
+    network_mode: host
+    depends_on:
+      - kafka
+      - mongo

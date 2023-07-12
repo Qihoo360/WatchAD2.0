@@ -1,0 +1,58 @@
+{
+  "status": 0,
+  "msg": "",
+  "data": {
+    "pages": [
+      {
+        "label": "Home",
+        "url": "/",
+        "redirect": "/alarm/list"
+      },
+      {
+        "label": "基础运营",
+        "children": [
+          {
+            "label": "实时威胁",
+            "url": "/alarm/list",
+            "rewrite": "/alarm/list",
+            "icon": "fas fa-theater-masks",
+            "schemaApi": "/static/json/alarm-list.json"
+          },
+          {
+            "label": "用户活动",
+            "url": "/user/activity",
+            "rewrite": "/user/activity",
+            "icon": "fas fa-user-clock",
+            "schemaApi": "/static/json/user-activity.json"
+          },
+          {
+            "label": "功能测试",
+            "url": "/tool/alarm",
+            "rewrite": "/user/alarm",
+            "icon": "fas fa-tools",
+            "schemaApi": "/static/json/alarm-test.json"
+          }
+        ]
+      },
+      {
+        "label": "系统管理",
+        "children": [
+          {
+            "label": "用户管理",
+            "url": "/user/list",
+            "rewrite": "/user/list",
+            "icon": "fas fa-users",
+            "schemaApi": "/static/json/user-list.json"
+          },
+          {
+            "label": "系统设置",
+            "url": "/system/set",
+            "rewrite": "/system/set",
+            "icon": "fas fa-cogs",
+            "schemaApi": "/static/json/system-set.json"
+          }
+        ]
+      }
+    ]
+  }
+}

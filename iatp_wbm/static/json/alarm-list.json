@@ -1,0 +1,1101 @@
+{
+  "type": "page",
+  "title": "告警事件",
+  "body": [
+    {
+      "type": "grid",
+      "columns": [
+        {
+          "body": [
+            {
+              "type": "panel",
+              "title": "告警事件分类分布",
+              "body": [
+                {
+                  "type": "chart",
+                  "config": {
+                    "series": [
+                      {
+                        "data": "${msg}",
+                        "type": "pie",
+                        "name": "访问来源",
+                        "radius": "50%",
+                        "emphasis": {
+                          "itemStyle": {
+                            "shadowBlur": 10,
+                            "shadowOffsetX": 0,
+                            "shadowColor": "rgba(0,0,0,0.5)"
+                          }
+                        }
+                      }
+                    ],
+                    "title": {
+                      "text": "威胁事件分类分布图",
+                      "subtext": "域威胁感知",
+                      "left": "center"
+                    },
+                    "tooltip": {
+                      "trigger": "item"
+                    },
+                    "legend": {
+                      "orient": "vertical",
+                      "left": "left"
+                    }
+                  },
+                  "_mode": "2",
+                  "name": "alarm_level_chart",
+                  "api": {
+                    "method": "post",
+                    "url": "/alarm/chart",
+                    "dataType": "form",
+                    "replaceData": true,
+                    "responseData": null,
+                    "data": {
+                      "&": "$$",
+                      "chart_name": "alarm_type_chart"
+                    }
+                  },
+                  "replaceChartOption": true,
+                  "visible": true
+                }
+              ],
+              "affixFooter": false
+            }
+          ]
+        },
+        {
+          "body": [
+            {
+              "type": "panel",
+              "title": "告警事件数量分布",
+              "body": [
+                {
+                  "type": "chart",
+                  "config": {
+                    "xAxis": {
+                      "type": "category",
+                      "boundaryGap": false,
+                      "data": "${day}"
+                    },
+                    "yAxis": {
+                      "type": "value"
+                    },
+                    "series": [
+                      {
+                        "data": "${line}",
+                        "type": "line",
+                        "areaStyle": {}
+                      }
+                    ],
+                    "title": {
+                      "text": "威胁事件数量分布图",
+                      "subtext": "域威胁感知",
+                      "left": "center"
+                    }
+                  },
+                  "_mode": "2",
+                  "api": {
+                    "method": "post",
+                    "url": "/alarm/chart",
+                    "dataType": "form",
+                    "replaceData": true,
+                    "data": {
+                      "&": "$$",
+                      "chart_name": "alarm_count_chart"
+                    }
+                  },
+                  "name": "alarm_count_chart"
+                }
+              ],
+              "affixFooter": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "crud",
+      "api": {
+        "method": "post",
+        "url": "/alarm/search",
+        "dataType": "form"
+      },
+      "bulkActions": [],
+      "itemActions": [],
+      "features": [
+        "view"
+      ],
+      "filter": {
+        "title": "筛选条件",
+        "body": [
+          {
+            "type": "input-datetime-range",
+            "label": "日期时间范围",
+            "name": "input-datetime-range"
+          },
+          {
+            "type": "input-text",
+            "name": "keywords",
+            "label": "关键字",
+            "readOnly": false
+          },
+          {
+            "type": "select",
+            "label": "事件等级",
+            "name": "alarm_level",
+            "options": [
+              {
+                "label": "高危",
+                "value": "high"
+              },
+              {
+                "label": "中危",
+                "value": "medium"
+              },
+              {
+                "label": "低危",
+                "value": "low"
+              }
+            ],
+            "checkAll": false,
+            "clearable": true
+          },
+          {
+            "type": "select",
+            "label": "处理状态",
+            "name": "deal_status",
+            "options": [
+              {
+                "label": "未处置",
+                "value": "open"
+              },
+              {
+                "label": "误报",
+                "value": "false_positive"
+              },
+              {
+                "label": "已告警",
+                "value": "notice"
+              },
+              {
+                "label": "已忽略",
+                "value": "ignore"
+              }
+            ],
+            "checkAll": false,
+            "clearable": true
+          },
+          {
+            "type": "picker",
+            "label": "告警选取",
+            "name": "picker",
+            "options": [
+              {
+                "label": "选项A",
+                "value": "A"
+              },
+              {
+                "label": "选项B",
+                "value": "B"
+              }
+            ],
+            "modalMode": "dialog",
+            "source": {
+              "method": "post",
+              "url": "/alarm/plugin",
+              "dataType": "form",
+              "data": {
+                "&": "$$"
+              }
+            },
+            "embed": false,
+            "mode": "",
+            "remark": null,
+            "labelRemark": null,
+            "inline": true,
+            "multiple": true,
+            "joinValues": true,
+            "delimiter": ","
+          }
+        ],
+        "persistData": true,
+        "clearPersistDataAfterSubmit": true,
+        "submitOnChange": false,
+        "submitText": "提交",
+        "initApi": "",
+        "wrapWithPanel": true,
+        "mode": "inline",
+        "messages": {
+          "fetchFailed": "初始化失败",
+          "fetchSuccess": "筛选成功"
+        },
+        "target": "alarm_level_chart,alarm_count_chart"
+      },
+      "perPageAvailable": [
+        10
+      ],
+      "messages": {},
+      "loadDataOnce": true,
+      "headerToolbar": [
+        {
+          "type": "bulk-actions",
+          "align": "left"
+        },
+        {
+          "type": "export-csv",
+          "tpl": "内容",
+          "align": "left"
+        }
+      ],
+      "filterTogglable": false,
+      "mode": "table",
+      "perPage": 10,
+      "keepItemSelectionOnPageChange": true,
+      "pageField": "page",
+      "perPageField": "perPage",
+      "autoJumpToTopOnPagerChange": false,
+      "syncResponse2Query": false,
+      "initFetch": true,
+      "footerToolbar": [
+        {
+          "type": "pagination",
+          "align": "left"
+        }
+      ],
+      "syncLocation": false,
+      "columns": [
+        {
+          "name": "id",
+          "label": "事件ID",
+          "type": "text"
+        },
+        {
+          "name": "alarm_time",
+          "label": "发生时间",
+          "type": "text",
+          "placeholder": "-"
+        },
+        {
+          "type": "text",
+          "label": "事件名称",
+          "name": "plugin_desc",
+          "placeholder": "-"
+        },
+        {
+          "type": "text",
+          "label": "攻击者",
+          "name": "attacker"
+        },
+        {
+          "type": "text",
+          "label": "受害者",
+          "name": "victim"
+        },
+        {
+          "type": "mapping",
+          "label": "事件等级",
+          "name": "alarm_level",
+          "value": "${alarm_level}",
+          "map": {
+            "low": "<span class=\"label label-info\">低风险</span>",
+            "information": "<span class=\"label label-info\">低风险</span>",
+            "medium": "<span class=\"label label-warning\">中风险</span>",
+            "high": "<span class='label label-danger'>高风险</span>"
+          }
+        },
+        {
+          "type": "mapping",
+          "label": "处置状态",
+          "name": "alarm_state",
+          "value": "${alarm_state}",
+          "map": {
+            "open": "<span class='label label-danger'>未处置</span>",
+            "false_positive": "<span class='label label-info'>误报</span>",
+            "ignore": "<span class='label label-warning'>已忽略</span>",
+            "notice": "<span class='label label-success'>已告警</span>"
+          }
+        },
+        {
+          "type": "operation",
+          "label": "操作",
+          "buttons": [
+            {
+              "label": "简介",
+              "type": "button",
+              "actionType": "drawer",
+              "level": "primary",
+              "dialog": {
+                "title": "查看详情",
+                "body": {
+                  "type": "form",
+                  "body": [
+                    {
+                      "name": "id",
+                      "label": "事件ID",
+                      "type": "input-text"
+                    },
+                    {
+                      "name": "timestamp",
+                      "label": "发生时间",
+                      "type": "input-date"
+                    },
+                    {
+                      "label": "事件名称",
+                      "name": "alarm_name",
+                      "type": "input-text"
+                    },
+                    {
+                      "label": "攻击者",
+                      "name": "attacker",
+                      "type": "input-text"
+                    },
+                    {
+                      "label": "受害者",
+                      "name": "victim",
+                      "type": "input-text"
+                    },
+                    {
+                      "label": "事件等级",
+                      "name": "alarm_level",
+                      "type": "input-text"
+                    }
+                  ]
+                }
+              },
+              "drawer": {
+                "type": "drawer",
+                "title": "${id} 事件描述",
+                "body": [
+                  {
+                    "type": "panel",
+                    "title": "插件详情",
+                    "body": [
+                      {
+                        "type": "table-view",
+                        "trs": [
+                          {
+                            "tds": [
+                              {
+                                "rowspan": 1,
+                                "body": {
+                                  "type": "tpl",
+                                  "tpl": "插件名称"
+                                },
+                                "colspan": 1
+                              },
+                              {
+                                "body": {
+                                  "type": "tpl",
+                                  "tpl": "${plugin_name}"
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "tds": [
+                              {
+                                "body": {
+                                  "type": "tpl",
+                                  "tpl": "插件描述"
+                                }
+                              },
+                              {
+                                "body": {
+                                  "type": "tpl",
+                                  "tpl": "${plugin_desc}"
+                                }
+                              }
+                            ],
+                            "height": 41
+                          },
+                          {
+                            "tds": [
+                              {
+                                "body": {
+                                  "type": "tpl",
+                                  "tpl": "插件版本"
+                                }
+                              },
+                              {
+                                "body": {
+                                  "type": "tpl",
+                                  "tpl": "${plugin_version}"
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "tds": [
+                              {
+                                "body": {
+                                  "type": "tpl",
+                                  "tpl": "插件作者"
+                                }
+                              },
+                              {
+                                "body": {
+                                  "type": "tpl",
+                                  "tpl": "${plugin_author}"
+                                }
+                              }
+                            ],
+                            "height": 41
+                          },
+                          {
+                            "tds": [
+                              {
+                                "body": {
+                                  "type": "tpl",
+                                  "tpl": "插件评分"
+                                }
+                              },
+                              {
+                                "body": [
+                                  {
+                                    "type": "input-rating",
+                                    "name": "rating",
+                                    "count": 5,
+                                    "half": false,
+                                    "allowClear": false,
+                                    "value": 1,
+                                    "readOnly": true,
+                                    "mode": "normal"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ],
+                    "affixFooter": false
+                  },
+                  {
+                    "type": "panel",
+                    "title": "告警描述",
+                    "body": [
+                      {
+                        "type": "table-view",
+                        "trs": [
+                          {
+                            "tds": [
+                              {
+                                "rowspan": 1,
+                                "body": {
+                                  "type": "tpl",
+                                  "tpl": "攻击者"
+                                },
+                                "colspan": 1
+                              },
+                              {
+                                "body": {
+                                  "type": "tpl",
+                                  "tpl": "${attacker}"
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "tds": [
+                              {
+                                "body": {
+                                  "type": "tpl",
+                                  "tpl": "攻击主机"
+                                }
+                              },
+                              {
+                                "body": {
+                                  "type": "tpl",
+                                  "tpl": "${attacker_workstation}"
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "tds": [
+                              {
+                                "body": {
+                                  "type": "tpl",
+                                  "tpl": "受害者"
+                                }
+                              },
+                              {
+                                "body": {
+                                  "type": "tpl",
+                                  "tpl": "${victim}"
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "tds": [
+                              {
+                                "body": {
+                                  "type": "tpl",
+                                  "tpl": "受害主机"
+                                }
+                              },
+                              {
+                                "body": {
+                                  "type": "tpl",
+                                  "tpl": "${victim_workstation}"
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "tds": [
+                              {
+                                "body": {
+                                  "type": "tpl",
+                                  "tpl": "告警描述"
+                                }
+                              },
+                              {
+                                "body": {
+                                  "type": "tpl",
+                                  "tpl": "${alarm_desc}"
+                                }
+                              }
+                            ],
+                            "height": 41
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "position": "right",
+                "closeOnOutside": true,
+                "data": null,
+                "closeOnEsc": true
+              }
+            },
+            {
+              "type": "button",
+              "label": "详情",
+              "actionType": "dialog",
+              "dialog": {
+                "title": "${id} 事件详情",
+                "body": [
+                  {
+                    "type": "tabs",
+                    "tabs": [
+                      {
+                        "title": "事件详情",
+                        "body": [
+                          {
+                            "type": "panel",
+                            "title": "告警描述",
+                            "body": [
+                              {
+                                "type": "table-view",
+                                "trs": [
+                                  {
+                                    "tds": [
+                                      {
+                                        "rowspan": 1,
+                                        "body": {
+                                          "type": "tpl",
+                                          "tpl": "事件发生时间"
+                                        },
+                                        "colspan": 1
+                                      },
+                                      {
+                                        "body": {
+                                          "type": "tpl",
+                                          "tpl": "${alarm_time}"
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "tds": [
+                                      {
+                                        "body": {
+                                          "type": "tpl",
+                                          "tpl": "攻击者"
+                                        }
+                                      },
+                                      {
+                                        "body": {
+                                          "type": "tpl",
+                                          "tpl": "${attacker}"
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "tds": [
+                                      {
+                                        "body": {
+                                          "type": "tpl",
+                                          "tpl": "攻击主机"
+                                        }
+                                      },
+                                      {
+                                        "body": {
+                                          "type": "tpl",
+                                          "tpl": "${attacker_workstation}"
+                                        }
+                                      }
+                                    ],
+                                    "height": 41
+                                  },
+                                  {
+                                    "tds": [
+                                      {
+                                        "body": {
+                                          "type": "tpl",
+                                          "tpl": "受害者"
+                                        }
+                                      },
+                                      {
+                                        "body": {
+                                          "type": "tpl",
+                                          "tpl": "${victim}"
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "tds": [
+                                      {
+                                        "body": {
+                                          "type": "tpl",
+                                          "tpl": "受害主机"
+                                        }
+                                      },
+                                      {
+                                        "body": {
+                                          "type": "tpl",
+                                          "tpl": "${victim_workstation}"
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "tds": [
+                                      {
+                                        "body": {
+                                          "type": "tpl",
+                                          "tpl": "告警描述"
+                                        }
+                                      },
+                                      {
+                                        "body": {
+                                          "type": "tpl",
+                                          "tpl": "${alarm_desc}"
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "tds": [
+                                      {
+                                        "body": {
+                                          "type": "tpl",
+                                          "tpl": "处置状态"
+                                        }
+                                      },
+                                      {
+                                        "body": [
+                                          {
+                                            "type": "mapping",
+                                            "value": "${alarm_state}",
+                                            "map": {
+                                              "false_positive": "<span class=\"label label-info\">误报</span>",
+                                              "notice": "<span class=\"label label-success\">已告警</span>",
+                                              "open": "<span class=\"label label-danger\">未处置</span>",
+                                              "ignore": "<span class=\"label label-warning\">忽略</span>"
+                                            },
+                                            "name": "alarm_state"
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ],
+                        "icon": "fa fa-snapchat-square",
+                        "reload": true
+                      },
+                      {
+                        "type": "page",
+                        "title": "受害资产详情",
+                        "body": [
+                          {
+                            "type": "service",
+                            "body": [
+                              {
+                                "type": "panel",
+                                "title": "资产详情",
+                                "body": [
+                                  {
+                                    "type": "table-view",
+                                    "trs": [
+                                      {
+                                        "tds": [
+                                          {
+                                            "body": {
+                                              "type": "tpl",
+                                              "tpl": "资产名称"
+                                            },
+                                            "rowspan": 1,
+                                            "colspan": 1
+                                          },
+                                          {
+                                            "body": {
+                                              "type": "tpl",
+                                              "tpl": "${assets_name}"
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "tds": [
+                                          {
+                                            "body": {
+                                              "type": "tpl",
+                                              "tpl": "资产管理员(Owner)"
+                                            }
+                                          },
+                                          {
+                                            "body": {
+                                              "type": "tpl",
+                                              "tpl": "${owner}"
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "tds": [
+                                          {
+                                            "body": {
+                                              "type": "tpl",
+                                              "tpl": "系统版本"
+                                            }
+                                          },
+                                          {
+                                            "body": {
+                                              "type": "tpl",
+                                              "tpl": "${system_version}"
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "tds": [
+                                          {
+                                            "body": {
+                                              "type": "tpl",
+                                              "tpl": "所属域"
+                                            }
+                                          },
+                                          {
+                                            "body": {
+                                              "type": "tpl",
+                                              "tpl": "${domain_name}"
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "tds": [
+                                          {
+                                            "body": {
+                                              "type": "tpl",
+                                              "tpl": "是否是域控制器"
+                                            }
+                                          },
+                                          {
+                                            "body": [
+                                              {
+                                                "type": "mapping",
+                                                "value": "${is_domain_controller}",
+                                                "map": {
+                                                  "true": "<span class=\"label label-danger\">域控制器</span>",
+                                                  "false": "<span class=\"label label-info\">非域控制器</span>"
+                                                },
+                                                "placeholder": "-",
+                                                "name": "is_domain_controller"
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "tds": [
+                                          {
+                                            "body": {
+                                              "type": "tpl",
+                                              "tpl": "是否配置了LAPS"
+                                            }
+                                          },
+                                          {
+                                            "body": [
+                                              {
+                                                "type": "mapping",
+                                                "value": "${is_set_laps}",
+                                                "map": {
+                                                  "true": "<span class=\"label label-success\">受保护</span>",
+                                                  "false": "<span class=\"label label-danger\">未受保护</span>"
+                                                },
+                                                "name": "is_set_laps"
+                                              }
+                                            ]
+                                          }
+                                        ],
+                                        "height": 41
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ],
+                            "messages": {},
+                            "api": {
+                              "method": "post",
+                              "url": "/assets/detail",
+                              "data": {
+                                "name": "${victim_workstation}"
+                              },
+                              "dataType": "form",
+                              "replaceData": true
+                            }
+                          }
+                        ],
+                        "icon": "fa fa-snapchat-square"
+                      },
+                      {
+                        "type": "page",
+                        "body": [
+                          {
+                            "type": "service",
+                            "body": [
+                              {
+                                "type": "panel",
+                                "title": "基础信息",
+                                "body": [
+                                  {
+                                    "type": "table-view",
+                                    "trs": [
+                                      {
+                                        "tds": [
+                                          {
+                                            "rowspan": 1,
+                                            "body": {
+                                              "type": "tpl",
+                                              "tpl": "发生时间"
+                                            },
+                                            "colspan": 1
+                                          },
+                                          {
+                                            "body": {
+                                              "type": "tpl",
+                                              "tpl": "${timestamp}"
+                                            }
+                                          },
+                                          {
+                                            "body": {
+                                              "type": "tpl",
+                                              "tpl": "标记"
+                                            }
+                                          },
+                                          {
+                                            "body": {
+                                              "type": "tpl",
+                                              "tpl": "${tag}"
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "tds": [
+                                          {
+                                            "body": {
+                                              "type": "tpl",
+                                              "tpl": "事件ID"
+                                            }
+                                          },
+                                          {
+                                            "body": {
+                                              "type": "tpl",
+                                              "tpl": "${event_id}"
+                                            }
+                                          },
+                                          {
+                                            "body": {
+                                              "type": "tpl",
+                                              "tpl": "主机名"
+                                            }
+                                          },
+                                          {
+                                            "body": {
+                                              "type": "tpl",
+                                              "tpl": "${host_name}"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "panel",
+                                "title": "日志内容",
+                                "body": [
+                                  {
+                                    "type": "json",
+                                    "source": "${event}",
+                                    "levelExpand": 5
+                                  }
+                                ],
+                                "data": {
+                                  "json": {
+                                    "a": "a",
+                                    "b": {
+                                      "c": "c"
+                                    }
+                                  }
+                                },
+                                "affixFooter": false
+                              }
+                            ],
+                            "messages": {},
+                            "api": {
+                              "method": "post",
+                              "url": "/alarm/raw",
+                              "data": {
+                                "id": "${id}"
+                              },
+                              "dataType": "form"
+                            }
+                          }
+                        ],
+                        "title": "原始日志",
+                        "icon": "fa fa-snapchat-square",
+                        "mountOnEnter": true,
+                        "unmountOnExit": true
+                      }
+                    ],
+                    "tabsMode": "line",
+                    "mountOnEnter": true,
+                    "unmountOnExit": true
+                  }
+                ],
+                "type": "dialog",
+                "closeOnEsc": false,
+                "closeOnOutside": false,
+                "showCloseButton": true,
+                "size": "lg"
+              },
+              "confirmText": ""
+            },
+            {
+              "type": "button",
+              "label": "处置",
+              "actionType": "dialog",
+              "dialog": {
+                "type": "dialog",
+                "title": "${id} 事件处置",
+                "body": [
+                  {
+                    "type": "wizard",
+                    "steps": [
+                      {
+                        "title": "告警处理",
+                        "body": [
+                          {
+                            "type": "select",
+                            "label": "处理选项",
+                            "name": "select_deal",
+                            "options": [
+                              {
+                                "label": "告警",
+                                "value": "alarm"
+                              },
+                              {
+                                "label": "误报",
+                                "value": "false_positive"
+                              },
+                              {
+                                "label": "忽略",
+                                "value": "ignore"
+                              }
+                            ],
+                            "disabled": false,
+                            "required": true,
+                            "description": "",
+                            "remark": null,
+                            "checkAll": false,
+                            "value": "alarm",
+                            "clearable": false,
+                            "searchable": false,
+                            "selectFirst": true,
+                            "multiple": false,
+                            "joinValues": true
+                          }
+                        ],
+                        "mode": "normal",
+                        "api": {
+                          "method": "post",
+                          "url": "/alarm/flow/deal",
+                          "dataType": "form",
+                          "data": {
+                            "select_deal": "${select_deal}"
+                          }
+                        }
+                      },
+                      {
+                        "title": "处理完成",
+                        "mode": "normal",
+                        "body": [
+                          {
+                            "type": "static-plain",
+                            "label": "",
+                            "name": "describe",
+                            "tpl": "感谢处理,告警流程已完毕",
+                            "inline": false
+                          }
+                        ],
+                        "api": {
+                          "method": "post",
+                          "url": "/alarm/flow",
+                          "dataType": "form",
+                          "data": {
+                            "&": "$$",
+                            "id": "${id}"
+                          },
+                          "responseData": null
+                        }
+                      }
+                    ],
+                    "mode": "horizontal",
+                    "reload": "open_alarm"
+                  }
+                ],
+                "closeOnEsc": false,
+                "closeOnOutside": false,
+                "showCloseButton": true,
+                "size": "lg"
+              },
+              "name": "alarm_level",
+              "level": "danger",
+              "icon": "fa fa-snapchat",
+              "disabledOn": "",
+              "visibleOn": "",
+              "visible": true,
+              "disabled": ""
+            }
+          ]
+        }
+      ],
+      "name": "open_alarm"
+    }
+  ]
+}

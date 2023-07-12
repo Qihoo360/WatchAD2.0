@@ -1,0 +1,208 @@
+{
+    "type": "page",
+    "body": [
+      {
+        "type": "crud",
+        "api": {
+          "method": "post",
+          "url": "/user/list",
+          "dataType": "form"
+        },
+        "columns": [
+          {
+            "type": "text",
+            "label": "ID",
+            "buttons": [
+              {
+                "label": "新建",
+                "type": "button",
+                "actionType": "dialog",
+                "level": "primary",
+                "dialog": {
+                  "title": "新增",
+                  "body": [
+                    {
+                      "type": "form",
+                      "api": {
+                        "method": "post",
+                        "url": "/user/create",
+                        "dataType": "form"
+                      },
+                      "body": [
+                        {
+                          "name": "id",
+                          "label": "用户名",
+                          "type": "input-text"
+                        },
+                        {
+                          "name": "failure_time",
+                          "label": "失效时间",
+                          "type": "input-date"
+                        }
+                      ]
+                    }
+                  ],
+                  "type": "dialog"
+                }
+              },
+              {
+                "type": "button",
+                "label": "删除",
+                "actionType": "ajax",
+                "level": "warning",
+                "confirmText": "确定要删除？",
+                "api": {
+                  "method": "post",
+                  "url": "/user/delete",
+                  "dataType": "form"
+                }
+              }
+            ],
+            "name": "id"
+          },
+          {
+            "type": "text",
+            "label": "用户名",
+            "name": "user_name"
+          },
+          {
+            "type": "date",
+            "label": "失效时间",
+            "name": "failure_time"
+          },
+          {
+            "type": "operation",
+            "label": "操作",
+            "buttons": [
+              {
+                "label": "新建",
+                "icon": "fas fa-user-plus",
+                "type": "button",
+                "actionType": "dialog",
+                "level": "primary",
+                "dialog": {
+                  "title": "新增",
+                  "body": [
+                    {
+                      "type": "form",
+                      "api": {
+                        "method": "post",
+                        "url": "/user/create",
+                        "dataType": "form"
+                      },
+                      "body": [
+                        {
+                          "label": "ID",
+                          "buttons": [
+                            {
+                              "label": "新建",
+                              "type": "button",
+                              "actionType": "dialog",
+                              "level": "primary",
+                              "dialog": {
+                                "title": "新增",
+                                "body": [
+                                  {
+                                    "type": "form",
+                                    "api": {
+                                      "method": "post",
+                                      "url": "/user/create",
+                                      "dataType": "form"
+                                    },
+                                    "body": [
+                                      {
+                                        "name": "id",
+                                        "label": "用户名",
+                                        "type": "input-text"
+                                      },
+                                      {
+                                        "name": "failure_time",
+                                        "label": "失效时间",
+                                        "type": "input-date"
+                                      }
+                                    ]
+                                  }
+                                ],
+                                "type": "dialog"
+                              }
+                            },
+                            {
+                              "type": "button",
+                              "label": "删除",
+                              "actionType": "ajax",
+                              "level": "warning",
+                              "confirmText": "确定要删除？",
+                              "api": {
+                                "method": "post",
+                                "url": "/user/delete",
+                                "dataType": "form"
+                              }
+                            }
+                          ],
+                          "name": "id",
+                          "type": "input-text"
+                        },
+                        {
+                          "label": "用户名",
+                          "name": "user_name",
+                          "type": "input-text"
+                        },
+                        {
+                          "label": "失效时间",
+                          "name": "failure_time",
+                          "type": "input-date"
+                        }
+                      ],
+                      "canAccessSuperData": false
+                    }
+                  ],
+                  "type": "dialog"
+                }
+              },
+              {
+                "type": "button",
+                "label": "删除",
+                "actionType": "ajax",
+                "level": "primary",
+                "confirmText": "确定要删除？",
+                "api": {
+                  "method": "post",
+                  "url": "/user/delete",
+                  "dataType": "form"
+                },
+                "icon": "fa fa-trash"
+              }
+            ]
+          }
+        ],
+        "bulkActions": [],
+        "itemActions": [],
+        "features": [
+          "create",
+          "delete"
+        ],
+        "perPageAvailable": [
+          10
+        ],
+        "messages": {},
+        "loadDataOnce": true,
+        "initFetch": true,
+        "keepItemSelectionOnPageChange": false,
+        "filter": {
+          "title": "查询条件",
+          "body": [
+            {
+              "type": "input-text",
+              "name": "user_name",
+              "label": "用户名"
+            }
+          ],
+          "submitText": "提交"
+        },
+        "title": "用户管理",
+        "columnsTogglable": true,
+        "perPage": 10
+      }
+    ],
+    "title": "用户管理"
+  }

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>360WatchAD</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+  <link rel="stylesheet" href="/static/sdk/sdk.css" />
+  <link rel="stylesheet" href="/static/sdk/helper.css" />
+  <link rel="stylesheet" href="../static//css/login.css">
+  <!-- 从 1.1.0 开始 sdk.css 将不支持 IE 11，如果要支持 IE11 请引用这个 css，并把前面那个删了 -->
+  <!-- <link rel="stylesheet" href="sdk-ie11.css" /> -->
+  <!-- 不过 amis 开发团队几乎没测试过 IE 11 下的效果，所以可能有细节功能用不了，如果发现请报 issue -->
+  <style>
+    html,
+    body,
+    .app-wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    .app-wrapper.amis-scope .cxd-Panel-title {
+      font-size: 20px !important;
+      text-align: center !important;
+      display: none;
+    }
+
+    .user_input {
+        margin-bottom: 20px!important;
+    }
+
+    .amis-scope .cxd-Form-item--normal>.cxd-Form-label {
+      font-size: 14px;
+      color: #fff;
+    }
+
+    .amis-scope .cxd-Panel-footer {
+      margin-top: 20px;
+      justify-content: left;
+    }
+
+    .amis-scope .cxd-Page {
+      background: rgba(0, 0, 0, 0);
+    }
+
+    .amis-scope .cxd-Image {
+      border: none;
+    }
+
+    .amis-scope .cxd-Image-thumb--contain>img {
+      width: 300px !important;
+    }
+
+    .amis-scope .cxd-Page-body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: -10px;
+    }
+
+    .amis-scope *,
+    .amis-scope *::before,
+    .amis-scope *::after {
+      color: #fff;
+      font-size: 18px;
+    }
+
+    .amis-scope .cxd-Image-thumb {
+      width: auto;
+      height: auto;
+    }
+
+    .amis-scope .cxd-Panel-btnToolbar .cxd-Button {
+      height: 32px;
+      line-height: 20px;
+    }
+
+    .amis-scope .cxd-Button--primary {
+      background: #009563;
+      border-color: #009563;
+    }
+
+    .amis-scope .cxd-Button--primary:hover {
+      background: #5cc492 !important;
+      border-color: #5cc492 !important;
+    }
+
+    .amis-scope .cxd-Toast-content .cxd-Toast-body .cxd-Html {
+      color: #000;
+      font-size: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root" class="app-wrapper"></div>
+  <script src="/static/sdk/sdk.js"></script>
+  <script type="text/javascript">
+    (function () {
+      let amis = amisRequire('amis/embed');
+      // 通过替换下面这个配置来生成不同页面
+      let amisJSON = {
+        "type": "page",
+        "bodyClassName": "custom-padding",
+        "style": {
+          "backgroundImage": "url('../static/image/login_bg_2.png')",
+          "backgroundSize": "cover",
+          "backgroundRepeat": "no-repeat",
+          "overflow": "hidden"
+        },
+        "body": [
+          {
+            "type": "grid",
+            "columns": [
+              {
+                "type": "container",
+                "style": {
+                  "height": "100%",
+                  "width": "550px",
+                  "backgroundColor": "rgba(0, 0, 0, 0.7)",
+                  "borderTopRightRadius": "35px",
+                  "borderBottomRightRadius": "35px",
+                  "display": "flex",
+                  "alignItems": "center",
+                  "justifyContent": "center",
+                },
+                "body": [
+                  {
+                    "type": "page",
+                    "body": [
+                      {
+                        "type": "image",
+                        "src": "../static/image/login_icon.png"
+                      }
+                      // {
+                      //   "type": "tpl",
+                      //   "tpl": "360域安全威胁感知系统"
+                      // }
+                    ]
+                  },
+                  {
+                    "type": "form",
+                    "title": "360域安全威胁感知系统",
+                    "mode": "horizontal",
+                    "className": "custom-form",
+                    "body": [
+                      {
+                        "label": "",
+                        "type": "input-text",
+                        "name": "user_name",
+                        "className": "custom-form-width user_input",
+                        "placeholder": "用户名"
+                      },
+                      {
+                        "type": "input-password",
+                        "label": "",
+                        "name": "password",
+                        "className": "custom-form-width",
+                        "placeholder": "密码"
+                      }
+                    ],
+                    "redirect": "/iatp#/alarm/list",
+                    "api": {
+                      "method": "post",
+                      "url": "/user/login",
+                      "dataType": "form"
+                    },
+                    "mode": "normal",
+                    "affixFooter": false,
+                    "panelClassName": "Panel--primary"
+                  },
+                ]
+              },
+              {
+                "type": "tpl",
+                "tpl": "",
+                "inline": false
+              }
+            ],
+            "className": "custom-height"
+          }
+        ]
+      };
+      let amisScoped = amis.embed('#root', amisJSON);
+    })();
+  </script>
+</body>
+
+</html>
