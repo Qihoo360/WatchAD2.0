@@ -1,4 +1,4 @@
-FROM golang:1.15.15-buster as builder
+FROM golang:1.17.1-buster as builder
 # 为我们的镜像设置必要的环境变量
 ENV GO111MODULE=on \
     GOPROXY=https://goproxy.cn,direct
