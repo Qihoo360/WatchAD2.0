@@ -4,7 +4,9 @@ import (
 	"context"
 	"crypto/sha1"
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
+	"iatp/common"
 	"iatp/setting"
 	"time"
 
@@ -74,6 +76,8 @@ func NewPluginAlarm(alarm_level, alarm_desc, alarm_category, alarm_attck string,
 }
 
 func (alarm *PluginAlarm) SendAlarm() {
+	alarm.SendAlarmKafka()
+
 	var alarm_result PluginAlarm
 
 	// 查询最近一段时间内没有处理的告警中是否有相同事件产生
@@ -94,6 +98,49 @@ func (alarm *PluginAlarm) SendAlarm() {
 
 	if insert_result == nil {
 		fmt.Println("告警写入失败")
+	}
+}
+
+func GetOutSourceSetting() []common.OutSource {
+
+	var result []common.OutSource = make([]common.OutSource, 0)
+	setting.OutSourceMongo.FindAll(bson.M{}).All(context.TODO(), &result)
+	return result
+}
+
+func (alarm *PluginAlarm) SendAlarmKafka() {
+
+	outsource := GetOutSourceSetting()
+	if outsource != nil && len(outsource) == 1 { // 默认试用第一个
+		address := outsource[0].Address
+		topic := outsource[0].Topic
+		if address == "" || topic == "" {
+			return
+		}
+		sarama_client, err := sarama.NewSyncProducer([]string{address}, config)
+
+		if err != nil {
+			fmt.Printf("发送者创建失败: %v", err)
+		}
+
+		val, err := json.Marshal(alarm)
+		if err != nil {
+			fmt.Printf("json 编码失败: %v", err)
+		}
+
+		msg := &sarama.ProducerMessage{
+			Topic: topic,
+			Value: sarama.ByteEncoder(val),
+		}
+
+		_, _, err = sarama_client.SendMessage(msg)
+		if err != nil {
+			fmt.Printf("saram 告警发送到队列失败: %v\n", err)
+		}
+
+		sarama_client.Close()
+	} else {
+		fmt.Printf("获取输出配置失败：%v", outsource)
 	}
 }
 

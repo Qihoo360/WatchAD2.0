@@ -24,6 +24,12 @@ type KafkaSourceConfig struct {
 	Oldest   bool   `bson:"oldest"`
 }
 
+// 输出配置
+type OutSource struct {
+	Address string `bson:"address"`
+	Topic   string `bson:"topic"`
+}
+
 // 返回所有消息源配置
 func GetAllSourceMessageConfig() []Source {
 	var sourceMsgConfig Source
@@ -44,21 +50,4 @@ func (s *Source) RegisterSource() {
 	if err := setting.SourceMongo.FindOne(bson.M{"sourceengine": s.SourceEngine}).Decode(&source_config); err != nil {
 		setting.SourceMongo.InsertOne(s)
 	}
-	//  else {
-	// 	config, _ := json.Marshal(source_config)
-	// 	fmt.Printf("[-]已存在 %s 相关配置\n旧配置:\n%s\n", s.SourceEngine, string(config))
-
-	// 	setting.SourceMongo.UpdateOne(bson.M{"sourceengine": s.SourceEngine}, bson.M{
-	// 		"$set": bson.D{
-	// 			{Key: "sourcename", Value: s.SourceName},
-	// 			{Key: "sourceconfig.brokers", Value: s.SourceConfig.Brokers},
-	// 			{Key: "sourceconfig.topics", Value: s.SourceConfig.Topics},
-	// 			{Key: "sourceconfig.group", Value: s.SourceConfig.Group},
-	// 		},
-	// 	})
-
-	// 	setting.SourceMongo.FindOne(bson.M{"sourceengine": s.SourceEngine}).Decode(&source_config)
-	// 	config, _ = json.Marshal(source_config)
-	// 	fmt.Printf("[+]更新完成\n新配置:\n%s\n", string(config))
-	// }
 }

@@ -16,9 +16,12 @@ type SettingService interface {
 	SaveSettingByName(setting_name string, setting_val interface{}, description string) error
 	// 返回来源采集配置 ata_source
 	GetSourceSetting() []common.Source
+	// 数据源输出配置
+	GetOutSourceSetting() *common.OutSource
 	// 配置Domain相关 ata_domain
 	GetDomainSetting() []domain.Domain
 	SaveSourceSetting(setting_val []common.Source) error
+	SaveOutSourceSetting(setting_val common.OutSource) error
 	SaveDomainSetting(setting_val []domain.Domain) error
 }
 
@@ -60,6 +63,16 @@ func (s *settingService) GetSourceSetting() []common.Source {
 	return result
 }
 
+func (s *settingService) GetOutSourceSetting() *common.OutSource {
+
+	var result []common.OutSource = make([]common.OutSource, 0)
+	setting.OutSourceMongo.FindAll(bson.M{}).All(context.TODO(), &result)
+	if result != nil && len(result) == 1 {
+		return &result[0]
+	}
+	return nil
+}
+
 func (s *settingService) SaveSourceSetting(setting_val []common.Source) error {
 	var tmp common.Source
 	for _, val := range setting_val {
@@ -74,6 +87,23 @@ func (s *settingService) SaveSourceSetting(setting_val []common.Source) error {
 				}})
 		}
 	}
+	return nil
+}
+
+func (s *settingService) SaveOutSourceSetting(val common.OutSource) error {
+
+	var tmp common.OutSource
+	//for _, val := range setting_val {
+	if err := setting.OutSourceMongo.FindOne(bson.M{"address": val.Address}).Decode(&tmp); err != nil {
+		setting.OutSourceMongo.DeleteMany(bson.M{}) // NOTE: 只保留一条数据
+		setting.OutSourceMongo.InsertOne(val)
+	} else {
+		setting.OutSourceMongo.UpdateOne(bson.M{"address": val.Address}, bson.M{
+			"$set": bson.M{
+				"topic": val.Topic,
+			}})
+	}
+	//}
 	return nil
 }
 

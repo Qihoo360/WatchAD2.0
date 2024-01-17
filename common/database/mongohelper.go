@@ -222,6 +222,17 @@ func (m *Mgo) DeleteOne(filter interface{}) *mongo.DeleteResult {
 	}
 }
 
+// 删除全部
+func (m *Mgo) DeleteMany(filter interface{}) *mongo.DeleteResult {
+	if collection, err := m.client.Database(m.database).Collection(m.collection).Clone(); err != nil {
+		// TODO: 发送数据库异常告警
+		return nil
+	} else {
+		deleteResult, _ := collection.DeleteMany(context.TODO(), filter)
+		return deleteResult
+	}
+}
+
 // 分页查询
 // param page: 页码
 // param perPage: 每页大小

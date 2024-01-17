@@ -62,11 +62,14 @@ var webCmd = &cobra.Command{
 					},
 				})
 			}
-
-			if !repositories.NewUserRepository().InsertOne(user) {
-				fmt.Println("[-]用户创建失败")
+			// 用户是否存在域中校验
+			if !d.IsExistUser(user) {
+				fmt.Println("[-]新增用户失败：请检查域内是否存在此用户")
+			} else {
+				if !repositories.NewUserRepository().InsertOne(user) {
+					fmt.Println("[-]新增用户失败：数据库中已存在此用户")
+				}
 			}
-
 		}
 	},
 }

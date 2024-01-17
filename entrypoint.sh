@@ -3,7 +3,7 @@
 source .env
 sleep 30
 ./iatp init --mongourl mongodb://$MONGOUSER:$MONGOPWD@127.0.0.1:27017
-./iatp init --mongourl mongodb://$MONGOUSER:$MONGOPWD@127.0.0.1:27017 --domainname $DCNAME --domainserver $DCSERVER 1 --username $DCUSER --password $DCPWD --ssl
+./iatp init --mongourl mongodb://$MONGOUSER:$MONGOPWD@127.0.0.1:27017 --domainname $DCNAME --domainserver $DCSERVER --username $DCUSER --password $DCPWD --ssl
 ./iatp init --mongourl mongodb://$MONGOUSER:$MONGOPWD@127.0.0.1:27017 --index
 ./iatp  web --init --authdomain $DCNAME --user $WEBUSER
 ./iatp  source --sourcename ITEvent --sourceengine event_log --brokers $BROKER --topic winlogbeat --group iatp --oldest false --kafka true

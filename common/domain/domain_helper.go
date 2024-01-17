@@ -187,13 +187,21 @@ func (domain *Domain) JudgeDCAccount(machine_account string) bool {
 
 // 获取用户DN
 func (domain *Domain) GetUserDN(cn string) string {
+
 	ldap_client := ldap_tool.NewLdap(domain.DomainServer, domain.UserName, domain.PassWord, domain.GetDomainScope(), domain.SSL)
 	entrys := ldap_client.SearchEntryByCN(cn, []string{"name"}, nil)
-	if len(entrys) > 0 {
+	if entrys != nil && len(entrys) > 0 {
 		return entrys[0].DN
 	}
-
 	return ""
+}
+
+// 判断用户是否在域中
+func (domain *Domain) IsExistUser(cn string) bool {
+
+	ldap_client := ldap_tool.NewLdap(domain.DomainServer, domain.UserName, domain.PassWord, domain.GetDomainScope(), domain.SSL)
+	entrys := ldap_client.SearchEntryByCN(cn, []string{"displayName"}, nil)
+	return entrys != nil && len(entrys) > 0
 }
 
 // 判断域内高风险账户

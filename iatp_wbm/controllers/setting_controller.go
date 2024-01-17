@@ -101,6 +101,21 @@ func (s *SettingController) PostQuery() mvc.Result {
 			ContentType: "application/json",
 			Object:      returnObj,
 		}
+	} else if setting_name == "out_source" {
+		// 配置采集来源
+		returnObj := map[string]interface{}{
+			"type":            "editor",
+			"name":            "out_source",
+			"language":        "json",
+			"size":            "md",
+			"value":           s.Service.GetOutSourceSetting(),
+			"allowFullscreen": true,
+		}
+
+		return mvc.Response{
+			ContentType: "application/json",
+			Object:      returnObj,
+		}
 	} else if setting_name == "domain" {
 		// 配置域名相关信息
 		returnObj := map[string]interface{}{
@@ -198,13 +213,24 @@ func (s *SettingController) PostSave() mvc.Result {
 		}
 
 		// source or domain 相关配置数据
-		for _, set_item := range []string{"source", "domain"} {
+		for _, set_item := range []string{"source", "out_source", "domain"} {
 			if v, ok := postVal[set_item].(string); ok {
 				if set_item == "source" {
 					var unmarshal_data []common.Source
 					err := json.Unmarshal([]byte(v), &unmarshal_data)
 					if err == nil {
 						err = s.Service.SaveSourceSetting(unmarshal_data)
+						if err != nil {
+							return ErrorResp(err.Error())
+						}
+					} else {
+						return ErrorResp(err.Error())
+					}
+				} else if set_item == "out_source" {
+					var unmarshal_data common.OutSource
+					err := json.Unmarshal([]byte(v), &unmarshal_data)
+					if err == nil {
+						err = s.Service.SaveOutSourceSetting(unmarshal_data)
 						if err != nil {
 							return ErrorResp(err.Error())
 						}
@@ -225,6 +251,11 @@ func (s *SettingController) PostSave() mvc.Result {
 				}
 			} else if v, ok := postVal[set_item].([]common.Source); ok {
 				err = s.Service.SaveSourceSetting(v)
+				if err != nil {
+					return ErrorResp(err.Error())
+				}
+			} else if v, ok := postVal[set_item].(common.OutSource); ok {
+				err = s.Service.SaveOutSourceSetting(v)
 				if err != nil {
 					return ErrorResp(err.Error())
 				}

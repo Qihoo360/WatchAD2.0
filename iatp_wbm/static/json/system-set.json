@@ -32,7 +32,7 @@
                 },
                 {
                     "type": "tpl",
-                    "tpl": "数据源相关配置",
+                    "tpl": "数据源输入配置",
                     "inline": false
                 },
                 {
@@ -45,6 +45,30 @@
                         "dataType": "form",
                         "data": {
                             "name": "source"
+                        }
+                    },
+                    "initFetch": true,
+                    "api": ""
+                },
+                {
+                    "type": "divider",
+                    "className": "b-4x m-none"
+                },
+                {
+                    "type": "tpl",
+                    "tpl": "数据源输出配置",
+                    "inline": false
+                },
+                {
+                    "type": "service",
+                    "body": [],
+                    "messages": {},
+                    "schemaApi": {
+                        "method": "post",
+                        "url": "/setting/query",
+                        "dataType": "form",
+                        "data": {
+                            "name": "out_source"
                         }
                     },
                     "initFetch": true,

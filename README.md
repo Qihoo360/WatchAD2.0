@@ -1,5 +1,9 @@
 # WatchAD2.0域威胁感知系统
 
+[![Golang version](https://img.shields.io/badge/Golang-1.17.1-017D9C.svg)](https://github.com/golang/go/releases/tag/go1.17.1) [![Kafka version](https://img.shields.io/badge/Kafka-2.8-252122.svg)](https://kafka.apache.org/quickstart) [![MongoDB version](https://img.shields.io/badge/MongoDB-latest-15EB61.svg)](https://www.mongodb.com/docs/) [![Winlogbeat version](https://img.shields.io/badge/Winlogbeat-7.6.1-F04E98.svg)](https://www.elastic.co/guide/en/beats/winlogbeat/current/winlogbeat-installation.html)
+
+[English Version](./README_EN.md) 
+
 ## 一、产品简述
 
 WatchAD2.0是360信息安全中心开发的一款针对域安全的日志分析与监控系统，它可以收集所有域控上的事件日志、网络流量，通过特征匹配、协议分析、历史行为、敏感操作和蜜罐账户等方式来检测各种已知与未知威胁，功能覆盖了大部分目前的常见内网域渗透手法。相较于WatchAD1.0，有以下提升：  
@@ -14,7 +18,8 @@ WatchAD2.0分为四部分， 日志收集Agent、规则检测及日志分析引�
 
 ![image](./images/Architecture.png)
 
-> 其中流量检测链路暂不开源
+> 其中流量检测链路暂不开源，可通过抓取域控流量，上传至360宙合SaaS PCAP分析平台进行威胁检测：https://zhouhe.360.cn/
+
 ## 三、目前支持的具体检测功能
 - 异常活动检测：证书服务活动、创建机器账户事件活动、创建类似DC的用户账户、重置用户账户密码活动、TGT 票据相关活动；
 - 凭证盗取：AS-REP 异常的流量请求、Kerberoasting 攻击行为、本地Dump Ntds文件利用；
@@ -26,8 +31,9 @@ WatchAD2.0分为四部分， 日志收集Agent、规则检测及日志分析引�
 ## 四、平台展示
 ![image](./images/Platform.png)
 ## 五、编译&部署&运行指南
-**服务端部署操作：**
-- Docker部署（推荐）：  
+### 服务端部署操作：
+**Docker部署（推荐）：**
+
 WatchAD2.0依赖的组件有kafka、zookpeer，go1.17.1，可使用docker一键部署，操作如下：
 在项目根目录下新建`.env`文件，需修改kafka地址、域控连接信息：
 ```shell
@@ -39,7 +45,7 @@ BROKER=10.10.10.10:9092
 #Mongo配置，默认账号密码
 MONGOUSER=IATP
 MONGOPWD=IATP-by-360
-	
+  
 #域控配置，其中DCUSER为域内用户的DN
 DCNAME="demo.com"
 DCSERVER=10.10.10.11
@@ -49,7 +55,7 @@ DCPWD="Pass123"
 #WEB配置，可配置为域内任意用户，或DCUSER的CN
 WEBUSER="IATP"
 ```
-> 注意：如果您的域控未启用ssl，需将entrypoint.sh文件中的ldap参数，去掉--ssl
+> 注意：如果您的域控未启用ssl，需将entrypoint.sh文件中的LDAP命令去掉--ssl参数
 
 执行以下命令，以启动WatchAD2.0相关依赖组件、检测引擎及WEB服务。
 ```
@@ -58,13 +64,14 @@ docker-compose up -d
 ```
 访问服务器80端口进入web后台，输入WEBUSER对应的域用户账号密码即可登录成功。
 > 注意：重启docker前，需删除kafka配置文件避免配置冲突：./data/kafka/logs/meta.properties
-- 手工部署：  
-需提前准备Kafka集群和MongoDB集群。
 
+**手工部署：**
+
+需提前准备Kafka集群和MongoDB集群。
 1. 编译go程序
    使用go1.17.1版本在项目根目录下执行编译命令：
    `go mod vendor&&go build -o ./main main.go`
-   将编译好的文件iatp及iatp_wbm目录拷贝至服务器
+   将编译好的文件main及iatp_wbm目录拷贝至服务器
 2. 初始化数据库信息
    `./main init --mongourl mongodb://mongo:password@127.0.0.1:27017`
    该操作将mongourl配置写入到 /etc/iatp.conf 配置文件中,如果需要重装需删除该文件再次由程序生成
@@ -84,10 +91,22 @@ docker-compose up -d
 8. 启动Web控制端
    `./main run --web_start`
 
-## 客户端部署操作：
+访问服务器80端口进入web后台，输入--user对应的域用户账号密码即可登录成功。
+
+**告警外发：**
+
+可在管理后台-系统设置-数据源输出配置中，按照如下格式配置告警外发（当前仅支持kafka）：
+```
+{
+  "Address": "10.10.10.10:9092",
+  "Topic": "iatp_alarm"
+}
+```
+### 客户端部署操作：
 **开启审核**  
-我们的分析基础是所有域控的所有事件日志，所以首先需要打开域控上的安全审核选项，让域控记录所有类型的事件日志。这里以 windows server 2016为例，在 本地安全策略 -> 安全设置 -> 本地策略 -> 审核策略，打开所有审核选项：  
-![image](./images/AuditPolicy.png)
+我们的分析基础是所有域控的所有事件日志，所以首先需要打开域控上的安全审核选项，让域控记录所有类型的事件日志。这里以 windows server 2016为例，在 本地安全策略 -> 安全设置 -> 本地策略 -> 审核策略，打开所有审核选项：
+
+![image](./images/AuditPolicy.png)  
 
 **安装winlogbeat**  
 我们的分析基础是所有域控的所有事件日志，建议在所有域控服务器上安装winlogbeat，否则会产生误报和漏报。
